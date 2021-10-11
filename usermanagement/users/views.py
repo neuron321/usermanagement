@@ -12,6 +12,21 @@ from django.contrib.auth.decorators import login_required
 import json
 
 # Create your views here.
+def about(request):
+    return render(request,'about.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
 def signup(request):
     form=UserCreationForm()
 
