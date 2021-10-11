@@ -51,7 +51,11 @@ def loginUser(request):
         email = request.POST.get('emailorusername')
         password =request.POST.get('password')
 
-        user = authenticate(request, email=email, password=password) or authenticate(request, username=email, password=password)
+        if email.find('@') ==-1:
+            user= authenticate(request, username=email, password=password)
+        else:
+            u=User.objects.get(email=email)
+            user = authenticate(request, username=u.username, password=password) 
 
         if user is not None:
             login(request, user)

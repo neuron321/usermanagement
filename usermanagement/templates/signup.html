@@ -123,6 +123,11 @@
         </div>  
       </div>		      
       </form>
+      <div class="text-center">
+        {% for message in messages %}
+            <p id="messages">{{message}}</p>
+          {% endfor %}
+        </div>
     <div class="text-center">Already have an account? <a href="/login">Login here</a></div>
   </div>
   
