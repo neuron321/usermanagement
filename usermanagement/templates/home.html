@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center vertical-align-center">
+<div class="col-sm-8">
+<table class="table  table-info  table-hover table-bordered"">
+    <thead>
+      <tr>
+        <th class="col-sm-1" scope="col">No</th>
+        <th class="col-sm-1" scope="col">ID</th>
+        <th class="col-sm-2" scope="col">Username</th>
+        <th class="col-sm-3" scope="col">Email Address</th>
+        <th class="col-sm-3" scope="col">Address</th>
+        <th class="col-sm-2" scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for user in users%}
+        <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{user.id}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.address}}</td>
+        <td><a  class="btn btn-outline-success toggle"  data-bs-toggle="modal" data-bs-target="#myModal" data-username="{{user.username}}"
+            data-id="{{user.id}}" data-email="{{user.email}}" data-address="{{user.address}}" role="button">Edit</a>
+            <a class="btn btn-outline-success" href="deleteUser/{{user.id}}/" role="button">Delete</a></td>
+    
+    </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+          <div class="modal-content">
+            
+              <div class="modal-header">
+                  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                  <h4 class="modal-title">Edit Profile</h4>
+              </div>
+              
+              <div class="modal-body">
+                  <form id="editform" method="POST" action="/editprofile/">
+                    {% csrf_token %}
+                    
+                        <div class="row mb-3">
+                          <label for="id" class="col-sm-2 col-form-label">User Id</label>
+                          <div class="col-sm-10 ">
+                            <input readonly type="number" class="form-control " name="id" id="id">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="username" class="col-sm-2 col-form-label">Username</label>
+                            <div class="col-sm-10">
+                              <input readonly type="text" class="form-control" name="username" id="username">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                              <input readonly type="email" class="form-control" name="email" id="email">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address" class="col-sm-2 col-form-label">Address</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" name="address" id="address">
+                            </div>
+                        </div>
+
+                        
+                        
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </form>
+                  
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+              </div>
+
+          </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block logout %}
+<!-- <form class="d-flex" method="GET" action="/logout" >
+    <button class="btn btn-outline-success" type="submit">Louout</button>
+  </form> -->
+  <div class="mr-auto" style="color:white ">Hello, {{request.user}}  <a  class="btn btn-outline-info btn-sm" href="{% url 'logout' %}">Logout</a></div>
+ <
+  
+  {% endblock logout%}

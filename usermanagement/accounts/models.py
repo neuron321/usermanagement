@@ -5,7 +5,7 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email,username,address, password=None):
+    def create_user(self, email,name,address, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -14,36 +14,38 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username,
-            address=address
+            
         )
+        user.email=email
+        user.name=name
+        user.address=address
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email,username, password,address='office'):
+    def create_staffuser(self, email,name, password,address='office'):
         """
         Creates and saves a staff user with the given email and password.
         """
         user = self.create_user(
             email,
             password=password,
-            username=username,
+            name=name,
             address=address
         )
         user.staff = True
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email,username, password,address='office'):
+    def create_superuser(self, email,name, password,address='office'):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
             email,
             password=password,
-            username=username,
+            name=name,
             address=address
         )
         user.staff = True
@@ -54,18 +56,19 @@ class UserManager(BaseUserManager):
 
 
 class Userprofile(AbstractBaseUser):
-    email = models.EmailField( verbose_name='email address', max_length=255, unique=True, )
-    username=models.CharField(max_length=255)
-    address=models.CharField(verbose_name='addresses',max_length=225,blank=True,null=True)
+    
+    email = models.EmailField( verbose_name='email address', max_length=255, unique=True )
+    name=models.CharField(max_length=255)
+    address=models.CharField(verbose_name='address',max_length=225,blank=True,null=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False) # a admin user; non super-user
     admin = models.BooleanField(default=False) # a superuser
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username'] # Email & Password are required by default.
+    USERNAME_FIELD ='email'
+    REQUIRED_FIELDS = [] # Email & Password are required by default.
     objects = UserManager()
     def get_username(self):
-        return self.username
+        return self.name
 
 
     def __str__(self):
