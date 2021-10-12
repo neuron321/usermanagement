@@ -17,16 +17,6 @@ def about(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
 def signup(request):
     form=UserCreationForm()
 
